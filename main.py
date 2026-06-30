@@ -6,6 +6,9 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import accuracy_score, confusion_matrix, classification_report
 from xgboost import XGBClassifier
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.neighbors import KNeighborsClassifier
 import joblib
 print("Libraries imported successfully!")
 dataset = pd.read_excel("flood dataset.xlsx")
@@ -51,10 +54,27 @@ X_train, X_test, y_train, y_test = train_test_split(
 scaler = StandardScaler()
 X_train = scaler.fit_transform(X_train)
 X_test = scaler.transform(X_test)
-model = XGBClassifier(use_label_encoder=False, eval_metric="logloss")
-model.fit(X_train, y_train)
-y_pred = model.predict(X_test)
-accuracy = accuracy_score(y_test, y_pred)
-print("Accuracy:", accuracy)
-cm = confusion_matrix(y_test, y_pred)
+dtree = DecisionTreeClassifier(random_state=42)
+rf = RandomForestClassifier(random_state=42)
+knn = KNeighborsClassifier()
+xgb = XGBClassifier(use_label_encoder=False, eval_metric='logloss')
+dtree.fit(X_train, y_train)
+rf.fit(X_train, y_train)
+knn.fit(X_train, y_train)
+xgb.fit(X_train, y_train)
+dt_pred = dtree.predict(X_test)
+rf_pred = rf.predict(X_test)
+knn_pred = knn.predict(X_test)
+xgb_pred = xgb.predict(X_test)
+print("Decision Tree:", accuracy_score(y_test, dt_pred))
+print("Random Forest:", accuracy_score(y_test, rf_pred))
+print("KNN:", accuracy_score(y_test, knn_pred))
+print("XGBoost:", accuracy_score(y_test, xgb_pred))
+print("Decision Tree:", accuracy_score(y_test, dt_pred))
+print("Random Forest:", accuracy_score(y_test, rf_pred))
+print("KNN:", accuracy_score(y_test, knn_pred))
+print("XGBoost:", accuracy_score(y_test, xgb_pred))
+cm = confusion_matrix(y_test, xgb_pred)
+print(cm)
+print(classification_report(y_test, xgb_pred))
 print(cm)
