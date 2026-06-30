@@ -14,6 +14,22 @@ print(dataset.head())
 print("Shape:", dataset.shape)
 dataset.info()
 print(dataset.describe())
+num_cols = dataset.select_dtypes(include=['int64','float64']).columns
+for col in num_cols:
+    Q1 = dataset[col].quantile(0.25)
+    Q3 = dataset[col].quantile(0.75)
+    IQR = Q3 - Q1
+    lower = Q1 - 1.5 * IQR
+    upper = Q3 + 1.5 * IQR
+    dataset[col] = np.where(dataset[col] < lower, lower, dataset[col])
+    dataset[col] = np.where(dataset[col] > upper, upper, dataset[col])
+print("Outlier handling completed")
+print(dataset.dtypes)
+cat_cols = dataset.select_dtypes(include=['object']).columns
+print("Categorical Columns:", list(cat_cols))
+if len(cat_cols) == 0:
+    print("No categorical columns found. Encoding not required.")
+print(dataset.isnull().any())
 print(dataset.isnull().sum())
 plt.figure(figsize=(8,5))
 sns.histplot(dataset.iloc[:,0], kde=True)
