@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Flood Prediction</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='main.css') }}">
+</head>
+<body>
+    <h1>Flood Prediction App</h1>
+
+    <form action="/predict" method="post" onsubmit=""return validateForm()">
+        <label>Temperature:</label><br>
+        <input type="number" name="temp"><br><br>
+
+        <label>Humidity:</label><br>
+        <input type="number" name="humidity"><br><br>
+
+        <label>Cloud Cover:</label><br>
+        <input type="number" name="cloud"><br><br>
+
+        <input type="submit" value="Predict">
+        <script src="{{ url_for('static', filename='main.js') }}"></script>
+    </form>
+</body>
+</html>
