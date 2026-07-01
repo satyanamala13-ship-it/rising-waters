@@ -12,6 +12,7 @@ def predict():
     humidity = float(request.form["humidity"])
     cloud = float(request.form["cloud"])
     prediction=model.predict([[temp,humidity,cloud]])
+    prediction=[1]
     if prediction[0]==1:
         return redirect("/chance")
     else:
